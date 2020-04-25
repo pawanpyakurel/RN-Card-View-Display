@@ -3,7 +3,7 @@ import Constants from "expo-constants"
 
 const style =  StyleSheet.create({
     AppWrapper:{
-        backgroundColor: "#2eb102",
+        backgroundColor: "#f8ddb9",
         flex:1,
         marginTop: Constants.statusBarHeight,
     },

@@ -4,7 +4,7 @@ const style =  StyleSheet.create({
     HomeWrapper:{
         margin: 0,
         padding: 0,
-        // flex:1,
+        flex:1,
         // alignItems: 'center',
         // justifyContent: 'center',
        
