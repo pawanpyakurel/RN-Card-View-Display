@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 //components
-import {Text, View, Modal, Image } from 'react-native';
+import {Text, View, Linking, Image, Platform } from 'react-native';
 
 import { style } from './Profile.style';
 
@@ -11,7 +11,17 @@ import {Title, Card, Button} from "react-native-paper";
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import {theme, CancelTheme} from "../CreateEmployee/CreateEmployee.styles"
 
-const Profile = () =>{
+const Profile = (props) =>{
+    const {name, position, phone, avatar, email, salary} = props.route.params.item
+
+    const openDial = () =>{
+        if(Platform.OS === "android"){
+            Linking.openURL("tel: 12345")
+        }
+        else{
+            Linking.openURL("telprompt: 12345")
+        }
+    }
     return (
         <View style ={style.profileWrapper}>
             <LinearGradient 
@@ -21,29 +31,34 @@ const Profile = () =>{
             <View style= {style.ProfileImageWrapper}>
                 <Image 
                     style ={ style.ProfileImage}
-                    source={{uri: "https://images.unsplash.com/photo-1485206412256-701ccc5b93ca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=512&q=80"}}
+                    source={{uri: avatar}}
                 />
             </View>
             <View style={style.TopContentBody}>
-                <Title> Maherndra Singh Dhoni</Title>
-                <Text style= {{fontSize: 18}}> Indian Cricketor </Text>
+                <Title>{name}</Title>
+                <Text style= {{fontSize: 18}}> {position} </Text>
             </View>
             <Card 
                 style={style.ProfileCardWrapper}
-                
+                onPress ={()=>{
+                    Linking.openURL("mailto: msdhoni@hotmail.com")
+                }}
             > 
                 <View style = {style.ProfileCardContent}>
                     <MaterialIcons name="email" size={32} color="#0676b7" />
-                    <Text style= {style.ProfileTitle}> msdhoni@hotmail.com </Text>
+                    <Text style= {style.ProfileTitle}> {email} </Text>
                 </View>
             </Card>
             <Card 
                 style={style.ProfileCardWrapper}
+                onPress ={()=>{
+                    openDial();
+                }}
                 
             > 
                 <View style = {style.ProfileCardContent}>
                     <Entypo name="phone" size={32} color="#0676b7" />
-                    <Text style= {style.ProfileTitle}> +977-9654356788 </Text>
+                    <Text style= {style.ProfileTitle}> {phone} </Text>
                 </View>
             </Card>
             <Card 
@@ -52,7 +67,7 @@ const Profile = () =>{
             > 
                 <View style = {style.ProfileCardContent}>
                     <MaterialIcons name="attach-money" size={32} color="#0676b7" />
-                    <Text style= {style.ProfileTitle}> msdhoni@hotmail.com </Text>
+                    <Text style= {style.ProfileTitle}> {salary} </Text>
                 </View>
             </Card>
             <View style={style.ProfileBottomWrapper}>
@@ -73,7 +88,7 @@ const Profile = () =>{
                     theme ={CancelTheme}
                     onPress = {()=>console.log("Employee Fired")}
                 >
-                    Fire Employee
+                    Fire
                 </Button>
             </View>
         </View>

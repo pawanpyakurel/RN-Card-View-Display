@@ -1,16 +1,16 @@
 import React from 'react'
 
-import { Card, FAB } from 'react-native-paper'
+import { Card } from 'react-native-paper'
 import { style } from './Card.styles';
 import {Text, Image, View, ScrollView } from 'react-native';
 
-const CardContent = ({item}) =>{
-    // console.log(props)
-
+const CardContent = ({item, navigation}) =>{
     const {name, position, phone, avatar} = item
     return(
         <ScrollView>
-            <Card style= {style.CardWrapper}>
+            <Card style= {style.CardWrapper}
+                onPress ={()=> navigation.navigate("Profile", {item})}
+            >
                 <View style = {style.CardViewWrapper}> 
                     <View style = {style.CardViewWrapperTop}> 
                         <Image 
