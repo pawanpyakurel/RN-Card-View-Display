@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
 
 //components
-import {Text, View, Modal } from 'react-native';
+import {Text, View, Modal, Alert } from 'react-native';
 import { TextInput, Button} from 'react-native-paper';
 //styles
 import {style, theme, CancelTheme} from './CreateEmployee.styles';
 
+//expo image picker
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
 const CreateEmployee =() =>{
     const[name, setName] = useState("")
@@ -14,6 +18,72 @@ const CreateEmployee =() =>{
     const[salary, setSalary] = useState("")
     const[picture, setPicture] = useState("")
     const[modal, setModal] = useState(false)
+
+    //imge picking from Galery
+    const pickFromGalary = async ()=>{
+        const {granted} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+        if (granted){
+            let data = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect:[1,1],
+                quality: 1
+            })
+            if(!data.cancelled){
+                let newfile = {
+                    uri: data.uri, type: `text/${data.uri.split(".")[1]}`, 
+                    name: `text/${data.uri.split(".")[1]}`
+                }
+                handleUpload(newfile)
+                // console.log(newfile)
+            }
+        }
+        else{
+            Alert.alert("Yo Must ALoow Permision to work")
+        }
+    }
+    //imge picking from Cammera
+    const pickFromCammera = async ()=>{
+        const {granted} = await Permissions.askAsync(Permissions.CAMERA)
+        if (granted){
+            let data = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect:[1,1],
+                quality: 0.5
+            })
+            if(!data.cancelled){
+                let newfile = {
+                    uri: data.uri, 
+                    type: `text/${data.uri.split(".")[1]}`, 
+                    name: `text.${data.uri.split(".")[1]}`
+                }
+                console.log(newfile)
+                handleUpload(newfile)
+            }
+        }
+        else{
+            Alert.alert("Yo Must ALoow Permision to work")
+        }
+    }
+
+
+    const handleUpload = (image) =>{
+        const data = new FormData ()
+        data.append("file", image)
+        data.append("upload_preset", "pawan-Employee-App")
+        data.append("cloud_name", "pawanpyakurel")
+
+        fetch("https://api.cloudinary.com/v1_1/pawanpyakurel/upload",{
+            method: "post",
+            body: data
+        })
+        .then(res=>res.json())
+        .then(data =>{
+            setPicture(data.url)
+            setModal(false)
+        })
+    }
     return(
         <View style={style.CreateEmployeeWrapper}>
             <TextInput
@@ -52,7 +122,7 @@ const CreateEmployee =() =>{
             />
             <Button 
                 style = {style.FormInputButton}
-                icon = "upload" 
+                icon = {picture=="" ? "upload": "check"} 
                 mode = "contained" 
                 theme ={theme}
                 onPress = {()=>setModal(true)}
@@ -79,7 +149,7 @@ const CreateEmployee =() =>{
                         <Button 
                             icon ="camera" 
                             mode = "contained" 
-                            onPress = {()=>console.log("cammera upload")}
+                            onPress = {()=>pickFromCammera()}
                             theme ={theme}
                         >
                             Cammera
@@ -87,7 +157,7 @@ const CreateEmployee =() =>{
                         <Button 
                             icon ="image-area" 
                             mode = "contained" 
-                            onPress = {()=>console.log("Gallery Upload")}
+                            onPress = {()=>pickFromGalary()}
                             theme ={theme}
                         >
                             Gallery
