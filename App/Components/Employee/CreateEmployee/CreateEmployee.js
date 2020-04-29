@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 //components
-import {Text, View, Modal, Alert } from 'react-native';
+import {View, Modal, Alert } from 'react-native';
 import { TextInput, Button} from 'react-native-paper';
 //styles
 import {style, theme, CancelTheme} from './CreateEmployee.styles';
@@ -17,7 +17,32 @@ const CreateEmployee =() =>{
     const[email, setEmail] = useState("")
     const[salary, setSalary] = useState("")
     const[picture, setPicture] = useState("")
+    const[position, setPosition] = useState("")
     const[modal, setModal] = useState(false)
+
+    //submit Data
+    const submitData = ()=>{
+        //fetch
+        fetch("http://192.168.0.102:3000/send-data",{
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name:name,
+                email:email,
+                phone:phone,
+                salary:salary,
+                picture:picture,
+                position:position,
+            })
+        })
+        .then(res=>res.json())
+        .then(data => {
+            console.log(data)
+        })
+    }
+
 
     //imge picking from Galery
     const pickFromGalary = async ()=>{
@@ -88,37 +113,49 @@ const CreateEmployee =() =>{
         <View style={style.CreateEmployeeWrapper}>
             <TextInput
                 label='Name'
+                {...name}
                 value={name}
                 style = {style.FormInputEmail}
                 theme ={theme}
                 mode="outlined"
-                onChangeText={text => setName({ text })}
+                onChangeText={text => setName(`${text }`)}
             />
             <TextInput
                 label='Email'
                 value={email}
                 style = {style.FormInputEmail}
                 theme ={theme}
+                editable 
                 mode="outlined"
-                onChangeText={text => setEmail({ text })}
+                onChangeText={text => setEmail(`${text }`)}
             />
             <TextInput
                 label='phone'
                 value={phone}
                 style = {style.FormInputEmail}
                 theme ={theme}
+                editable 
                 mode="outlined"
                 keyboardType= "number-pad"
-                onChangeText={text => setPhone({ text })}
+                onChangeText={text => setPhone(`${text }`)}
             />
             <TextInput
                 label='salary'
                 value={salary}
                 style = {style.FormInputEmail}
                 theme ={theme}
+                editable 
                 mode="outlined"
-                keyboardType= "number-pad"
-                onChangeText={text => setSalary({ text })}
+                onChangeText={text => setSalary(`${text }`)}
+            />
+            <TextInput
+                label='position'
+                value={position}
+                style = {style.FormInputEmail}
+                theme ={theme}
+                editable 
+                mode="outlined"
+                onChangeText={text => setPosition(`${text }`)}
             />
             <Button 
                 style = {style.FormInputButton}
@@ -134,7 +171,7 @@ const CreateEmployee =() =>{
                 icon = "content-save" 
                 mode = "contained" 
                 theme ={theme}
-                onPress = {()=>console.log("Contain save")}
+                onPress = {()=>submitData()}
             >
                 Save
             </Button>

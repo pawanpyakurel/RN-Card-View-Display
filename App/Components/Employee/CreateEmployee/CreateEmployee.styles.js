@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const style =  StyleSheet.create({
 
     CreateEmployeeWrapper:{
+        flex:1,
         flexDirection: "column"
 
     },
