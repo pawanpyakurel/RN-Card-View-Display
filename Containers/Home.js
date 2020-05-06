@@ -17,7 +17,7 @@ import { style } from './Home.styles'
 
 const HomeStack = createStackNavigator();
 const HeaderOption = {
-    title: "Home Screen",
+    title: `Home Screen`,
     headerTintColor: "white",
     
     headerStyle:{
@@ -50,12 +50,12 @@ const Home =() =>{
                 <HomeStack.Screen 
                     name="Create" 
                     component={CreateEmployee}
-                    options = {{...HeaderOption, title: "Create Profile"}}
+                    options = {{...HeaderOption, title: `Create Profile`}}
                 />
                 <HomeStack.Screen 
                     name="Profile" 
                     component={Profile} 
-                    options = {{...HeaderOption, title: "Profile Section"}}
+                    options = {{...HeaderOption, title: `Profile Section`}}
                 />
             </HomeStack.Navigator>
            

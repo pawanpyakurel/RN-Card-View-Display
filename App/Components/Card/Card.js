@@ -5,7 +5,7 @@ import { style } from './Card.styles';
 import {Text, Image, View, ScrollView } from 'react-native';
 
 const CardContent = ({item, navigation}) =>{
-    const {name, position, phone, avatar} = item
+    const {name, position, phone, picture} = item
     return(
         <ScrollView>
             <Card style= {style.CardWrapper}
@@ -15,7 +15,7 @@ const CardContent = ({item, navigation}) =>{
                     <View style = {style.CardViewWrapperTop}> 
                         <Image 
                             style ={style.ImageWrapper}
-                            source = {{uri: avatar}}
+                            source = {{uri: picture}}
                         />
                     </View>
                     <View style = {style.CardViewWrapperButton}> 

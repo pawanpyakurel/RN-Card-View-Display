@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 //components
-import {Text, View, Linking, Image, Platform } from 'react-native';
+import {Text, View, Linking, Image, Platform, Alert } from 'react-native';
 
 import { style } from './Profile.style';
 
@@ -12,14 +12,37 @@ import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import {theme, CancelTheme} from "../CreateEmployee/CreateEmployee.styles"
 
 const Profile = (props) =>{
-    const {name, position, phone, avatar, email, salary} = props.route.params.item
+    const {name, position, phone, picture, email, salary, _id} = props.route.params.item;
+    
+    //deleting
+    const deleteEmployee = () =>{
+        fetch("http://192.168.0.102:3000/delete",{
+            method: "post",
+            headers :{
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({
+                _id: `${_id}`
+            })
+        })
+        .then(res => {`${res}`.json(), console.log(res)}
+        )
+        .then(deletedItem =>{
+            Alert.alert(`${deletedItem.name} is deletes`)
+        })
+        .catch (error => {
+            Alert.alert(error)
+        })
+        
+    }
 
     const openDial = () =>{
         if(Platform.OS === "android"){
-            Linking.openURL("tel: 12345")
+            Linking.openURL(`tel: ${phone}`)
         }
         else{
-            Linking.openURL("telprompt: 12345")
+            Linking.openURL(`telprompt: ${phone}`)
         }
     }
     return (
@@ -31,7 +54,7 @@ const Profile = (props) =>{
             <View style= {style.ProfileImageWrapper}>
                 <Image 
                     style ={ style.ProfileImage}
-                    source={{uri: avatar}}
+                    source={{uri: picture}}
                 />
             </View>
             <View style={style.TopContentBody}>
@@ -76,7 +99,11 @@ const Profile = (props) =>{
                     icon = "account-edit" 
                     mode = "contained" 
                     theme ={theme}
-                    onPress = {()=>console.log("Contain save")}
+                    // onPress = {()=>{
+                    //     props.navigation.navigate("Create",
+                    //     {name, position, phone, picture, email, salary, _id}
+                    //     )
+                    // }}
                 >
                     Edit
                 </Button>
@@ -86,7 +113,7 @@ const Profile = (props) =>{
                     icon = "delete" 
                     mode = "contained" 
                     theme ={CancelTheme}
-                    onPress = {()=>console.log("Employee Fired")}
+                    onPress = {()=>deleteEmployee()}
                 >
                     Fire
                 </Button>

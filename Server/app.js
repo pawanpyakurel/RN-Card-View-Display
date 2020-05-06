@@ -97,3 +97,8 @@ app.post('/update',(req,res)=>{
 app.listen(3000, ()=>{
     console.log("server running")
 })
+
+
+
+//start
+// nodemon app

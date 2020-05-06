@@ -23,9 +23,9 @@ const style =  StyleSheet.create({
         marginLeft:3,
     },
     ImageWrapper:{
-        width: 63,
-        height: 63,
-        borderRadius: 20,
+        width: 61.5,
+        height: 61,
+        borderRadius: 40,
     }, 
     CardViewWrapper:{
         flexDirection:'row',
@@ -38,6 +38,8 @@ const style =  StyleSheet.create({
         paddingRight: 6,
     },
     CardViewWrapperTop:{
+        position: "relative",
+        zIndex: 3,
         width: 65,
         height: 65,
         borderRadius: 40,
